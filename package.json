@@ -1,0 +1,18 @@
+{
+  "name": "redditOrginizer",
+  "version": "1.0.0",
+  "description": "Orginize saved post from reddit",
+  "main": "index.js",
+  "author": "Karson Nichols <nicholsk18@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r dotenv/config server/index.js dotenv_config_path=.env",
+    "server": "nodemon -r dotenv/config server/index.js dotenv_config_path=.env",
+    "prod:build": "parcel build public/index.html && parcel build public/error.html",
+    "dev": "parcel public/index.html"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
