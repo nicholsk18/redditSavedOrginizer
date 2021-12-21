@@ -8,10 +8,11 @@
   "scripts": {
     "start": "node -r dotenv/config server/index.js dotenv_config_path=.env",
     "server": "nodemon -r dotenv/config server/index.js dotenv_config_path=.env",
-    "prod:build": "parcel build public/index.html && parcel build public/error.html",
-    "dev": "parcel client/public/index.html",
+    "prod:build": "parcel build client/public/index.html",
     "dev:server": "parcel client/public/index.html && nodemon server:dev",
-    "server:dev": "nodemon server/server.js"
+    "client:dev": "parcel client/public/index.html",
+    "server:dev": "nodemon server/server.js",
+    "css:watch": "yarn tailwindcss -i ./client/src/input.css -o ./dist/output.css --watch"
   },
   "dependencies": {
     "body-parser": "^1.19.1",

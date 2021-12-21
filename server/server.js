@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-app.use("/api", api);
+// app.use("/api", api);
 
 app.use(express.static(path.resolve(__dirname, "../dist")));
 
