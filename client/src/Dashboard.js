@@ -4,8 +4,13 @@ import Card from "./components/Card";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [redditAuth, setRedditAuth] = useState({ code: "", state: "" });
-  const isAuth = window.sessionStorage.getItem("redditAuth");
+  const [redditData, setRedditData] = useState(null);
+  const [isAuth, setIsAuth] = useState(
+    window.sessionStorage.getItem("redditAuth")
+  );
+  const [hasToken, setHasToken] = useState(
+    window.sessionStorage.getItem("redditToken")
+  );
 
   if (isAuth) {
     const { code, state } = JSON.parse(isAuth);
@@ -23,12 +28,51 @@ const Dashboard = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          if (data.error) {
+            setIsAuth(null);
+            setHasToken(null);
+          } else {
+            const expires = new Date(new Date().getTime() + 60000 * 60);
+
+            window.sessionStorage.setItem(
+              "redditToken",
+              JSON.stringify({
+                expiresAt: expires,
+                token: data.access_token,
+              })
+            );
+
+            setHasToken(data.access_token);
+          }
         });
     });
   } else {
-    navigate("/", { replace: true });
+    // window.sessionStorage.removeItem("redditAuth");
+    // navigate("/", { replace: true });
   }
+
+  if (!isAuth || !hasToken) {
+    console.log(isAuth + " isAuth");
+    console.log(hasToken + " hasToken");
+    // window.sessionStorage.removeItem("redditAuth");
+    // window.sessionStorage.removeItem("redditToken");
+    // navigate("/", { replace: true });
+  }
+
+  useEffect(() => {
+    console.log("useEffect");
+    // fetch("/api/getData", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ token: hasToken }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
+  });
 
   return (
     <div className="container mx-auto p-4">

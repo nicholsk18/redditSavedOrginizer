@@ -9,7 +9,6 @@ const path = require("path");
 router.post("/api/auth", (req, res, next) => {
   const { code, state } = req.body.data;
 
-  console.log(code);
   const details = {
     grant_type: "authorization_code",
     code: code,
@@ -23,7 +22,6 @@ router.post("/api/auth", (req, res, next) => {
     formBody.push(encodedKey + "=" + encodedValue);
   }
   formBody = formBody.join("&");
-  console.log(formBody);
 
   fetch(`https://www.reddit.com/api/v1/access_token`, {
     method: "POST",
@@ -42,9 +40,13 @@ router.post("/api/auth", (req, res, next) => {
       return res.json();
     })
     .then((data) => {
-      console.log(data);
+      res.send(data);
     });
-  // console.log(req.body);
+});
+
+router.post("/api/getData", (req, res, next) => {
+  const token = req.body.token;
+  console.log(token);
 });
 
 module.exports = router;
