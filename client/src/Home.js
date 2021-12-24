@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     const isAuth = window.sessionStorage.getItem("redditAuth");
-    console.log(isAuth);
 
-    if (false) {
+    if (isAuth) {
       navigate("/dashboard");
+    } else {
+      const code = searchParams.get("code");
+      const state = searchParams.get("state");
+
+      if (code && state) {
+        window.sessionStorage.setItem("redditAuth", { code, state });
+        navigate("/dashboard");
+      }
     }
   });
 
