@@ -10,12 +10,11 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(express.json());
-// app.use("/api", api);
+app.use(api);
 
 app.use(express.static(path.resolve(__dirname, "../dist")));
 
 app.get("*", (req, res) => {
-  console.log(req.query);
   res.sendFile(path.resolve(__dirname, "../dist", "index.html"));
 });
 

@@ -9,14 +9,17 @@ const Home = () => {
     const isAuth = window.sessionStorage.getItem("redditAuth");
 
     if (isAuth) {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } else {
       const code = searchParams.get("code");
       const state = searchParams.get("state");
 
       if (code && state) {
-        window.sessionStorage.setItem("redditAuth", { code, state });
-        navigate("/dashboard");
+        window.sessionStorage.setItem(
+          "redditAuth",
+          JSON.stringify({ code, state })
+        );
+        navigate("/dashboard", { replace: true });
       }
     }
   });
