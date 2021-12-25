@@ -1,47 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Login from "./components/Login";
+import Dashboard from "./Dashboard";
+import { getToken } from "./helpers/dataHelper";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const code = searchParams.get("code");
+  const state = searchParams.get("state");
 
   const [hasToken, setHasToken] = useState(
     window.sessionStorage.getItem("redditToken")
   );
 
-  // if (!hasToken) {
-  //   console.log(hasToken);
-  //   navigate("/login", { replace: true });
-  // }
+  if (code && state) {
+    useEffect(async () => {
+      const token = await getToken(code, state);
+      setHasToken(token);
+      navigate("/", { replace: true });
+    });
+  }
 
-  // useEffect(() => {
-  //   if (isAuth && hasToken) {
-  //     navigate("/dashboard", { replace: true });
-  //   } else {
-  //     const code = searchParams.get("code");
-  //     const state = searchParams.get("state");
-
-  //     if (code && state) {
-  //       const expires = new Date(new Date().getTime() + 60000 * 60);
-
-  //       window.sessionStorage.setItem(
-  //         "redditAuth",
-  //         JSON.stringify({
-  //           expiresAt: expires,
-  //           code,
-  //           state,
-  //         })
-  //       );
-  //       navigate("/dashboard", { replace: true });
-  //     }
-  //   }
-  // });
-
-  return !hasToken ? (
-    <Login />
-  ) : (
-    <div className="container mx-auto p-4 center">home</div>
-  );
+  return !hasToken ? <Login /> : <Dashboard />;
 };
 
 export default Home;

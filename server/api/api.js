@@ -1,3 +1,4 @@
+const { Console } = require("console");
 const express = require("express");
 const router = new express.Router();
 // const fetch = require("node-fetch");
@@ -46,7 +47,23 @@ router.post("/api/auth", (req, res, next) => {
 
 router.post("/api/getData", (req, res, next) => {
   const token = req.body.token;
-  console.log(token);
+  fetch(`https://oauth.reddit.com/user/${process.env.REDDIT_USER_NAME}/saved`, {
+    method: "GET",
+    withCredentials: true,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      // console.log(res);
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((data) => {
+      res.send(data.data.children);
+    });
 });
 
 module.exports = router;
