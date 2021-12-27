@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "./components/Card";
 import { getRedditData } from "./helpers/dataHelper";
 
-const Dashboard = () => {
+const Dashboard = ({ userName }) => {
   const [token, setToken] = useState(
     window.sessionStorage.getItem("redditToken")
   );
@@ -12,9 +12,8 @@ const Dashboard = () => {
 
   useEffect(async () => {
     const mySession = JSON.parse(token);
-    if (!data) {
-      const redditData = await getRedditData(mySession.token);
-      console.log(redditData);
+    if (!data && userName) {
+      const redditData = await getRedditData(userName, mySession.token);
       setData(redditData);
     }
   });

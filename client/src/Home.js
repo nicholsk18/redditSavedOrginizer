@@ -14,6 +14,7 @@ const Home = () => {
   const [hasToken, setHasToken] = useState(
     window.sessionStorage.getItem("redditToken")
   );
+  const [userName, setUserName] = useState(null);
 
   useEffect(async () => {
     if (code && state) {
@@ -30,11 +31,14 @@ const Home = () => {
       if (!display_name) {
         setHasToken(null);
         window.sessionStorage.removeItem("redditToken");
+      } else {
+        const name = display_name.replace("u_", "");
+        setUserName(name);
       }
     }
-  }, [hasToken]);
+  }, [hasToken, userName]);
 
-  return !hasToken ? <Login /> : <Dashboard />;
+  return !hasToken && !userName ? <Login /> : <Dashboard userName={userName} />;
 };
 
 export default Home;

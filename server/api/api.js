@@ -47,7 +47,9 @@ router.post("/api/auth", (req, res, next) => {
 
 router.post("/api/getData", (req, res, next) => {
   const token = req.body.token;
-  fetch(`https://oauth.reddit.com/user/${process.env.REDDIT_USER_NAME}/saved`, {
+  const userName = req.body.userName;
+
+  fetch(`https://oauth.reddit.com/user/${userName}/saved`, {
     method: "GET",
     withCredentials: true,
     headers: {

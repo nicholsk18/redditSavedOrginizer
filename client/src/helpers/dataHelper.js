@@ -30,13 +30,13 @@ export const getToken = (code, state) => {
     });
 };
 
-export const getRedditData = (token) => {
+export const getRedditData = (userName, token) => {
   return fetch("http://localhost:3001/api/getData", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ token }),
+    body: JSON.stringify({ userName, token }),
   })
     .then((res) => res.json())
     .then((data) => data);
