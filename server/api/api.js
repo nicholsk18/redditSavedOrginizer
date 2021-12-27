@@ -56,13 +56,47 @@ router.post("/api/getData", (req, res, next) => {
     },
   })
     .then((res) => {
-      // console.log(res);
-      if (res.ok) {
-        return res.json();
+      if (res.status >= 400) {
+        return {
+          data: {
+            status: res.status,
+          },
+        };
       }
+      return res.json();
     })
     .then((data) => {
+      if (data.status && data.status >= 400) {
+        res.send(data.status);
+      }
+
       res.send(data.data.children);
+    });
+});
+
+router.post("/api/checkAuth", (req, res, next) => {
+  const token = req.body.token;
+  fetch(`https://oauth.reddit.com/api/v1/me`, {
+    method: "GET",
+    withCredentials: true,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      if (res.status >= 400) {
+        return {
+          subreddit: {
+            display_name: null,
+          },
+        };
+      }
+
+      return res.json();
+    })
+    .then((data) => {
+      res.send({ display_name: data.subreddit.display_name });
     });
 });
 

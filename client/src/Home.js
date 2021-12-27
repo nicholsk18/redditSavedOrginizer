@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./Dashboard";
-import { getToken } from "./helpers/dataHelper";
+import { getToken, checkAuth } from "./helpers/dataHelper";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -15,13 +15,24 @@ const Home = () => {
     window.sessionStorage.getItem("redditToken")
   );
 
-  if (code && state) {
-    useEffect(async () => {
+  useEffect(async () => {
+    if (code && state) {
       const token = await getToken(code, state);
       setHasToken(token);
       navigate("/", { replace: true });
-    });
-  }
+    }
+  }, [state, code]);
+
+  useEffect(async () => {
+    if (hasToken) {
+      const token = JSON.parse(hasToken).token;
+      const display_name = await checkAuth(token);
+      if (!display_name) {
+        setHasToken(null);
+        window.sessionStorage.removeItem("redditToken");
+      }
+    }
+  }, [hasToken]);
 
   return !hasToken ? <Login /> : <Dashboard />;
 };

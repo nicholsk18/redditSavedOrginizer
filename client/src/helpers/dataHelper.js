@@ -41,3 +41,15 @@ export const getRedditData = (token) => {
     .then((res) => res.json())
     .then((data) => data);
 };
+
+export const checkAuth = (token) => {
+  return fetch("http://localhost:3001/api/checkAuth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  })
+    .then((res) => res.json())
+    .then((data) => data.display_name);
+};
