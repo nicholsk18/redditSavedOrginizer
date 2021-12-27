@@ -3,10 +3,10 @@ import React from "react";
 const Card = ({ title, subreddit, link }) => {
   return (
     <div
-      className="max-w-sm rounded overflow-hidden shadow-lg"
+      className="max-w-sm rounded overflow-hidden shadow-lg flex flex-col justify-between"
       style={{ height: 100 + "%" }}
     >
-      <div className="px-6 py-4">
+      <div className="px-6 py-4 text-center">
         <div className="font-bold text-xl mb-2">{title}</div>
         <p className="text-gray-700 text-base">subreddit: {subreddit}</p>
       </div>
