@@ -20,12 +20,13 @@ const Home = () => {
     if (code && state) {
       const token = await getToken(code, state);
       setHasToken(token);
+      // Strip the tokens from url
       navigate("/", { replace: true });
     }
   }, [state, code]);
 
   useEffect(async () => {
-    if (hasToken) {
+    if (hasToken && !userName) {
       const token = JSON.parse(hasToken).token;
       const display_name = await checkAuth(token);
       if (!display_name) {

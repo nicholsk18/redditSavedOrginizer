@@ -49,7 +49,7 @@ router.post("/api/getData", (req, res, next) => {
   const token = req.body.token;
   const userName = req.body.userName;
 
-  fetch(`https://oauth.reddit.com/user/${userName}/saved`, {
+  fetch(`https://oauth.reddit.com/user/${userName}/saved?limit=100`, {
     method: "GET",
     withCredentials: true,
     headers: {
@@ -72,6 +72,7 @@ router.post("/api/getData", (req, res, next) => {
         res.send(data.status);
       }
 
+      // console.log(data.data);
       res.send(data.data.children);
     });
 });
